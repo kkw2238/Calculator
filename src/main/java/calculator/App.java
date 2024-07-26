@@ -120,7 +120,7 @@ public class App {
 
             isInquiry = askInquiry(sc);
             if(isInquiry) {
-                calculator.inquiry();
+                calculator.inquiryResults();
             }
 
             isRun = askMoreCalculation(sc);

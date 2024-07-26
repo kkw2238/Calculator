@@ -45,7 +45,7 @@ public class Calculator {
     }
 
     // 과거 저장된 연산 결과 전부를 출력하는 함수
-    public void inquiry() {
+    public void inquiryResults() {
         for(double d : memorize) {
             System.out.print(d + " ");
         }
