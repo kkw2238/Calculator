@@ -1,7 +1,5 @@
 package calculator;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -89,6 +87,28 @@ public class App {
         }
     }
 
+    // 배열을 앞으로 당기는 함수
+    public static void pushMemorize(double[] memorize) {
+        double memBackNum = 0, memNowNum = 0;
+        for(int i = CAPACITY - 1; i >= 0; --i) {
+            /*
+            *  a에 현재 값을 기억
+            *  b에 이전 값을 덮어 씌운다
+            *  이전 값을 현재 값으로 덮어 씌운다.
+            */
+            memNowNum = memorize[i];
+            memorize[i] = memBackNum;
+            memBackNum = memNowNum;
+        }
+    }
+
+    public static void printMemorize(double[] memorize) {
+        for(double d : memorize) {
+            System.out.print(d + " ");
+        }
+        System.out.println();
+    }
+
     public static boolean run() throws Exception  {
         int[] numbers = { 0, 0 };
         double[] memorize = new double[CAPACITY];
@@ -110,11 +130,20 @@ public class App {
             inOperator = inputOperator(sc);
 
             calculationResult = calculation(numbers, inOperator);
+
+            // 배열이 꽉 찬 경우 앞으로 밀어준다.
+            if(index == CAPACITY) {
+                pushMemorize(memorize);
+                --index;
+            }
+
             // 결과를 배열에 저장 후 index 증가
             memorize[index++] = calculationResult;
             printResult(numbers, inOperator, calculationResult);
 
-            isRun = askMoreCalculation(sc) && index < CAPACITY;
+            printMemorize(memorize);
+
+            isRun = askMoreCalculation(sc);
         }
 
         return true;
