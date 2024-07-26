@@ -5,8 +5,7 @@ import java.util.regex.Pattern;
 
 public class App {
     // 사칙연산에 사용될 정규식 + - / * 중 1개
-    static final String REGEXP_ONLY_OPERATOR = "(.[+-/*])";
-    static final int NUM_OF_CALCULATOR_TYPE = 2;
+    static final String REGEXP_ONLY_OPERATOR = "(.[+-/*%])";
     static final int CALCULATOR = 0, CIRCLE_CALCULATOR = 1;
 
     // 숫자 입력받는 함수
@@ -38,6 +37,7 @@ public class App {
         return inOperator.charAt(0);
     }
 
+    // 사용할 계산기 타입을 입력받는 함수
     public static int inputCalculatorType(Scanner sc) throws Exception {
         System.out.print("사용할 계산기를 골라주세요. (0 : 사칙연산 계산기, 1 : 원의 넓이 계산기) : " );
         String input = sc.nextLine();
@@ -132,10 +132,9 @@ public class App {
         return calculationResult;
     }
 
-    public static boolean run() throws Exception  {
+    public static void run() throws Exception  {
         int calculatorType = 0;
-        boolean isRun = true;
-        boolean isRemove = false, isInquiry = false;
+        boolean isRun = true, isRemove = false, isInquiry = false;
         double calculationResult = 0;
 
         Calculator[] calculator = { new ArithmeticCalculator(), new CircleCalculator() };
@@ -173,8 +172,6 @@ public class App {
 
             isRun = askMoreCalculation(sc);
         }
-
-        return true;
     }
 
     public static void main(String[] args) {

@@ -10,11 +10,18 @@ public class ArithmeticCalculator extends Calculator {
             '+', 0,
             '-', 1,
             '*', 2,
-            '/', 3
+            '/', 3,
+            '%', 4
     );
 
     ArithmeticCalculator() {
-        operators = new Operator[]{ new AddOperator(), new SubtractOperator(), new MultiplyOperator(), new DivideOperator()};
+        operators = new Operator[]{
+                new AddOperator(),
+                new SubtractOperator(),
+                new MultiplyOperator(),
+                new DivideOperator(),
+                new ModOperator()
+        };
     }
 
     @Override
