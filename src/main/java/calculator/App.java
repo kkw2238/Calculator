@@ -1,13 +1,13 @@
 package calculator;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class App {
     // 사칙연산에 사용될 정규식 + - / * 중 1개
     static final String REGEXP_ONLY_OPERATOR = "(.[+-/*])";
-    // 최대 저장공간
-    static final int CAPACITY = 10;
 
     // 숫자 입력받는 함수
     public static void inputNumbers(int[] numbers, Scanner sc) throws Exception {
@@ -49,8 +49,7 @@ public class App {
                 result = numbers[0] - numbers[1];
                 break;
             case '/' :
-                if(numbers[1] == 0)
-                {
+                if(numbers[1] == 0) {
                     throw new Exception("분모는 0이 될 수 없습니다.");
                 }
                 result = (double)numbers[0] / numbers[1];
@@ -87,22 +86,26 @@ public class App {
         }
     }
 
-    // 배열을 앞으로 당기는 함수
-    public static void pushMemorize(double[] memorize) {
-        double memBackNum = 0, memNowNum = 0;
-        for(int i = CAPACITY - 1; i >= 0; --i) {
-            /*
-            *  a에 현재 값을 기억
-            *  b에 이전 값을 덮어 씌운다
-            *  이전 값을 현재 값으로 덮어 씌운다.
-            */
-            memNowNum = memorize[i];
-            memorize[i] = memBackNum;
-            memBackNum = memNowNum;
+    // 가장 오래된 메모리를 삭제할 것인지 확인하는 함수
+    public static boolean askRemove(Scanner sc) {
+        System.out.print("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? ( remove 입력시 삭제 ) : ");
+        String answer = sc.nextLine();
+        answer = answer.toLowerCase();
+
+        return answer.equals("remove");
+    }
+
+    // Queue를 앞으로 당기는 함수
+    public static void removeMemorize(Queue<Double> memorize) {
+        if(!memorize.isEmpty()) {
+            memorize.poll();
+        } else {
+            System.out.println("삭제할 값이 없습니다.");
         }
     }
 
-    public static void printMemorize(double[] memorize) {
+
+    public static void printMemorize(Queue<Double> memorize) {
         for(double d : memorize) {
             System.out.print(d + " ");
         }
@@ -111,11 +114,11 @@ public class App {
 
     public static boolean run() throws Exception  {
         int[] numbers = { 0, 0 };
-        double[] memorize = new double[CAPACITY];
+        Queue<Double> memorize = new LinkedList<>();
         int index = 0;
         double calculationResult = 0;
         char inOperator = ' ';
-        boolean isRun = true;
+        boolean isRun = true, isRemove = false;
 
         Scanner sc = new Scanner(System.in);
 
@@ -128,21 +131,16 @@ public class App {
         while(isRun) {
             inputNumbers(numbers, sc);
             inOperator = inputOperator(sc);
-
             calculationResult = calculation(numbers, inOperator);
-
-            // 배열이 꽉 찬 경우 앞으로 밀어준다.
-            if(index == CAPACITY) {
-                pushMemorize(memorize);
-                --index;
-            }
-
-            // 결과를 배열에 저장 후 index 증가
-            memorize[index++] = calculationResult;
             printResult(numbers, inOperator, calculationResult);
 
-            printMemorize(memorize);
+            isRemove = askRemove(sc);
+            if(isRemove) {
+                removeMemorize(memorize);
+            }
 
+            memorize.add(calculationResult);
+            printMemorize(memorize);
             isRun = askMoreCalculation(sc);
         }
 
