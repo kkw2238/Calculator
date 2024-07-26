@@ -38,6 +38,57 @@ public class App {
         return inOperator.charAt(0);
     }
 
+    // 사용자에게 계산기를 더 사용할 것인지 물어보는 함수
+    public static boolean askMoreCalculation(Scanner sc) throws Exception {
+        System.out.print("더 계산 하시겠습니까? yes/exit ( exit 입력시 종료 ) : ");
+        String answer = sc.nextLine();
+        answer = answer.toLowerCase();
+
+        if(answer.equals("exit")) {
+            return false;
+        }
+        else if(answer.equals("yes")) {
+            return true;
+        }
+        else {
+            throw new Exception("yes/exit 중 하나만 입력해주십시오");
+        }
+    }
+
+    // 가장 오래된 메모리를 삭제할 것인지 확인하는 함수
+    public static boolean askRemove(Scanner sc) throws Exception {
+        System.out.print("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? no/remove ( remove 입력시 삭제 ) : ");
+        String answer = sc.nextLine();
+        answer = answer.toLowerCase();
+
+        if(answer.equals("no")) {
+            return false;
+        }
+        else if(answer.equals("remove")) {
+            return true;
+        }
+        else {
+            throw new Exception("no/remove 중 하나만 입력해주십시오");
+        }
+    }
+
+    // 과거 저장 내역을 출력해 줄 것인지 물어보는 함수
+    public static boolean askInquiry(Scanner sc) throws Exception {
+        System.out.print("저장된 연산 결과를 조회하시겠습니까? no/inquiry ( inquiry 입력시 출력 ) : ");
+        String answer = sc.nextLine();
+        answer = answer.toLowerCase();
+
+        if(answer.equals("no")) {
+            return false;
+        }
+        else if(answer.equals("inquiry")) {
+            return true;
+        }
+        else {
+            throw new Exception("no/inquiry 중 하나만 입력해주십시오");
+        }
+    }
+
     // 입력 받은 데이터를 토대로 연산해주는 함수
     public static double calculation(int[] numbers, char inOperator) throws Exception {
         double result = 0;
@@ -69,30 +120,12 @@ public class App {
         System.out.printf("%d %c %d = %f\n", numbers[0], inOperator, numbers[1], calculationResult);
     }
 
-    // 사용자에게 계산기를 더 사용할 것인지 물어보는 함수
-    public static boolean askMoreCalculation(Scanner sc) throws Exception {
-        System.out.print("더 계산 하시겠습니까? yes/no/exit ( exit 입력시 종료 ) : ");
-        String answer = sc.nextLine();
-        answer = answer.toLowerCase();
-
-        if(answer.equals("exit") || answer.equals("no")) {
-            return false;
+    // 과거 저장된 연산 결과 전부를 출력하는 함수
+    public static void printMemorize(Queue<Double> memorize) {
+        for(double d : memorize) {
+            System.out.print(d + " ");
         }
-        else if(answer.equals("yes")) {
-            return true;
-        }
-        else {
-            throw new Exception("yes/no/exit 중 하나만 입력해주십시오");
-        }
-    }
-
-    // 가장 오래된 메모리를 삭제할 것인지 확인하는 함수
-    public static boolean askRemove(Scanner sc) {
-        System.out.print("가장 먼저 저장된 연산 결과를 삭제하시겠습니까? ( remove 입력시 삭제 ) : ");
-        String answer = sc.nextLine();
-        answer = answer.toLowerCase();
-
-        return answer.equals("remove");
+        System.out.println();
     }
 
     // Queue를 앞으로 당기는 함수
@@ -104,29 +137,19 @@ public class App {
         }
     }
 
-
-    public static void printMemorize(Queue<Double> memorize) {
-        for(double d : memorize) {
-            System.out.print(d + " ");
-        }
-        System.out.println();
-    }
-
     public static boolean run() throws Exception  {
         int[] numbers = { 0, 0 };
         Queue<Double> memorize = new LinkedList<>();
         int index = 0;
         double calculationResult = 0;
         char inOperator = ' ';
-        boolean isRun = true, isRemove = false;
+        boolean isRun = true, isRemove = false, isInquiry = false;
 
         Scanner sc = new Scanner(System.in);
 
         /*
             while 탈출 조건
             1. 사용자가 no / exit를 입력할 경우
-            2. 저장공간이 꽉찬 경우
-                => inRun = false로 변환
          */
         while(isRun) {
             inputNumbers(numbers, sc);
@@ -140,7 +163,12 @@ public class App {
             }
 
             memorize.add(calculationResult);
-            printMemorize(memorize);
+
+            isInquiry = askInquiry(sc);
+            if(isInquiry) {
+                printMemorize(memorize);
+            }
+
             isRun = askMoreCalculation(sc);
         }
 
