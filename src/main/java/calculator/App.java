@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class App {
     // 사칙연산에 사용될 정규식 + - / * 중 1개
     static final String REGEXP_ONLY_OPERATOR = "(.[+-/*])";
+    static final int NUM_OF_CALCULATOR_TYPE = 2;
     static final int CALCULATOR = 0, CIRCLE_CALCULATOR = 1;
 
     // 숫자 입력받는 함수
@@ -38,7 +39,7 @@ public class App {
     }
 
     public static int inputCalculatorType(Scanner sc) throws Exception {
-        System.out.print("사용할 계산기를 골라주세요. (0 : 사칙연산 계산기, 1 : 원의 넓이 계산기)" );
+        System.out.print("사용할 계산기를 골라주세요. (0 : 사칙연산 계산기, 1 : 원의 넓이 계산기) : " );
         String input = sc.nextLine();
 
         return Integer.parseInt(input);
@@ -106,57 +107,36 @@ public class App {
     }
 
     // 사칙연산 계산기를 사용하는 함수
-    public static void useCalculator(Calculator calculator, Scanner sc) throws Exception {
+    public static double useCalculator(Calculator calculator, Scanner sc) throws Exception {
         int[] numbers = { 0, 0 };
         double calculationResult = 0;
         char inOperator = ' ';
-        boolean isRemove = false, isInquiry = false;
 
         inputNumbers(numbers, sc);
         inOperator = inputOperator(sc);
         calculationResult = calculator.calculate(numbers, inOperator);
         printResult(numbers, inOperator, calculationResult);
 
-        isRemove = askRemove(sc);
-        if(isRemove) {
-            calculator.removeResult();
-        }
-
-        calculator.addMemorize(calculationResult);
-
-        isInquiry = askInquiry(sc);
-        if(isInquiry) {
-            calculator.inquiry();
-        }
+        return calculationResult;
     }
 
     // 원의 넓이 계산기를 사용하는 함수
-    public static void useCircleCalculator(Calculator calculator, Scanner sc) throws Exception {
+    public static double useCircleCalculator(Calculator calculator, Scanner sc) throws Exception {
         int[] r = { 0 };
         double calculationResult = 0;
-
-        boolean isRemove = false, isInquiry = false;
 
         inputNumbers(r, sc);
         calculationResult = calculator.calculateCircleArea(r);
         printCircleResult(r[0], calculationResult);
 
-        isRemove = askRemove(sc);
-        if(isRemove) {
-            calculator.removeResult();
-        }
-
-        calculator.addMemorize(calculationResult);
-
-        isInquiry = askInquiry(sc);
-        if(isInquiry) {
-            calculator.inquiry();
-        }
+        return calculationResult;
     }
 
     public static boolean run() throws Exception  {
         int calculatorType = 0;
         boolean isRun = true;
+        boolean isRemove = false, isInquiry = false;
+        double calculationResult = 0;
 
         Calculator[] calculator = { new ArithmeticCalculator(), new CircleCalculator() };
         Scanner sc = new Scanner(System.in);
@@ -168,15 +148,27 @@ public class App {
         while(isRun) {
             calculatorType = inputCalculatorType(sc);
 
-            switch(calculatorType) {
+            switch (calculatorType) {
                 case CALCULATOR:
-                    useCalculator(calculator[CALCULATOR], sc);
+                    calculationResult = useCalculator(calculator[CALCULATOR], sc);
                     break;
                 case CIRCLE_CALCULATOR:
-                    useCircleCalculator(calculator[CIRCLE_CALCULATOR], sc);
+                    calculationResult = useCircleCalculator(calculator[CIRCLE_CALCULATOR], sc);
                     break;
                 default:
-                    break;
+                    throw new Exception("계산기 종류를 확인해 주세요.");
+            }
+
+            isRemove = askRemove(sc);
+            if(isRemove) {
+                calculator[calculatorType].removeResult();
+            }
+
+            calculator[calculatorType].addMemorize(calculationResult);
+
+            isInquiry = askInquiry(sc);
+            if(isInquiry) {
+                calculator[calculatorType].inquiry();
             }
 
             isRun = askMoreCalculation(sc);

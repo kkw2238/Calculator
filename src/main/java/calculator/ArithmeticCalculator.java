@@ -1,29 +1,28 @@
 package calculator;
 
+import calculator.operators.*;
+
+import java.util.Map;
+
 public class ArithmeticCalculator extends Calculator {
+    static Operator[] operators;
+    static final Map<Character, Integer> OPERATOR_INDEX = Map.of(
+            '+', 0,
+            '-', 1,
+            '*', 2,
+            '/', 3
+    );
+
+    ArithmeticCalculator() {
+        operators = new Operator[]{ new AddOperator(), new SubtractOperator(), new MultiplyOperator(), new DivideOperator()};
+    }
 
     @Override
     public double calculate(int[] numbers, char inOperator) throws Exception {
         double result = 0;
-        switch (inOperator) {
-            case '+' :
-                result = numbers[0] + numbers[1];
-                break;
-            case '-' :
-                result = numbers[0] - numbers[1];
-                break;
-            case '/' :
-                if(numbers[1] == 0) {
-                    throw new Exception("분모는 0이 될 수 없습니다.");
-                }
-                result = (double)numbers[0] / numbers[1];
-                break;
-            case '*' :
-                result = numbers[0] * numbers[1];
-                break;
-            default :
-                break;
-        }
+
+        int operatorIndex = OPERATOR_INDEX.get(inOperator);
+        result = operators[operatorIndex].operate(numbers[0], numbers[1]);
 
         return result;
     }

@@ -39,7 +39,6 @@ public abstract class Calculator {
         Calculator.memorizeCircleCalculation = newMemorize;
     }
 
-
     // 입력 받은 데이터를 토대로 연산해주는 함수
     double calculateCircleArea(int[] r) { return 0; };
     double calculate(int[] numbers, char inOperator) throws Exception { return 0; };
