@@ -89,32 +89,6 @@ public class App {
         }
     }
 
-    // 입력 받은 데이터를 토대로 연산해주는 함수
-    public static double calculation(int[] numbers, char inOperator) throws Exception {
-        double result = 0;
-        switch (inOperator) {
-            case '+' :
-                result = numbers[0] + numbers[1];
-                break;
-            case '-' :
-                result = numbers[0] - numbers[1];
-                break;
-            case '/' :
-                if(numbers[1] == 0) {
-                    throw new Exception("분모는 0이 될 수 없습니다.");
-                }
-                result = (double)numbers[0] / numbers[1];
-                break;
-            case '*' :
-                result = numbers[0] * numbers[1];
-                break;
-            default :
-                break;
-        }
-
-        return result;
-    }
-
     // 결과 출력해주는 함수
     public static void printResult(int[] numbers, char inOperator, double calculationResult) {
         System.out.printf("%d %c %d = %f\n", numbers[0], inOperator, numbers[1], calculationResult);
@@ -145,6 +119,8 @@ public class App {
         char inOperator = ' ';
         boolean isRun = true, isRemove = false, isInquiry = false;
 
+        Calculator calculator = new Calculator();
+
         Scanner sc = new Scanner(System.in);
 
         /*
@@ -154,7 +130,7 @@ public class App {
         while(isRun) {
             inputNumbers(numbers, sc);
             inOperator = inputOperator(sc);
-            calculationResult = calculation(numbers, inOperator);
+            calculationResult = calculator.calculate(numbers, inOperator);
             printResult(numbers, inOperator, calculationResult);
 
             isRemove = askRemove(sc);
@@ -162,7 +138,7 @@ public class App {
                 removeMemorize(memorize);
             }
 
-            memorize.add(calculationResult);
+            calculator.addMemorize(calculationResult);
 
             isInquiry = askInquiry(sc);
             if(isInquiry) {
