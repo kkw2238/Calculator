@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class App {
     // 사칙연산에 사용될 정규식 + - / * 중 1개
     static final String REGEXP_ONLY_OPERATOR = "(.[+-/*])";
-    static final int CALCULATOR = 1, CIRCLE_CALCULATOR = 2;
+    static final int CALCULATOR = 0, CIRCLE_CALCULATOR = 1;
 
     // 숫자 입력받는 함수
     public static void inputNumbers(int[] numbers, Scanner sc) throws Exception {
@@ -38,7 +38,7 @@ public class App {
     }
 
     public static int inputCalculatorType(Scanner sc) throws Exception {
-        System.out.print("사용할 계산기를 골라주세요. (1 : 사칙연산 계산기, 2 : 원의 넓이 계산기)" );
+        System.out.print("사용할 계산기를 골라주세요. (0 : 사칙연산 계산기, 1 : 원의 넓이 계산기)" );
         String input = sc.nextLine();
 
         return Integer.parseInt(input);
@@ -100,6 +100,7 @@ public class App {
         System.out.printf("%d %c %d = %f\n", numbers[0], inOperator, numbers[1], calculationResult);
     }
 
+    // 반지름 너비 출력해주는 함수
     public static void printCircleResult(int r, double calculationResult) {
         System.out.printf("반지름 %d인 원의 넓이 = %f\n", r, calculationResult);
     }
@@ -125,7 +126,7 @@ public class App {
 
         isInquiry = askInquiry(sc);
         if(isInquiry) {
-            calculator.inquiryResults();
+            calculator.inquiry();
         }
     }
 
@@ -142,14 +143,14 @@ public class App {
 
         isRemove = askRemove(sc);
         if(isRemove) {
-            calculator.removeCircleResult();
+            calculator.removeResult();
         }
 
-        calculator.addCircleMemorize(calculationResult);
+        calculator.addMemorize(calculationResult);
 
         isInquiry = askInquiry(sc);
         if(isInquiry) {
-            calculator.inquiryCircleResults();
+            calculator.inquiry();
         }
     }
 
@@ -157,7 +158,7 @@ public class App {
         int calculatorType = 0;
         boolean isRun = true;
 
-        Calculator calculator = new Calculator();
+        Calculator[] calculator = { new ArithmeticCalculator(), new CircleCalculator() };
         Scanner sc = new Scanner(System.in);
 
         /*
@@ -169,10 +170,10 @@ public class App {
 
             switch(calculatorType) {
                 case CALCULATOR:
-                    useCalculator(calculator, sc);
+                    useCalculator(calculator[CALCULATOR], sc);
                     break;
                 case CIRCLE_CALCULATOR:
-                    useCircleCalculator(calculator, sc);
+                    useCircleCalculator(calculator[CIRCLE_CALCULATOR], sc);
                     break;
                 default:
                     break;
