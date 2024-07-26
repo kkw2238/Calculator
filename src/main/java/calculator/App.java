@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 public class App {
     // 사칙연산에 사용될 정규식 + - / * 중 1개
     static final String REGEXP_ONLY_OPERATOR = "(.[+-/*])";
+    // 최대 저장공간
+    static final int CAPACITY = 10;
 
     // 숫자 입력받는 함수
     public static void inputNumbers(int[] numbers, Scanner sc) throws Exception {
@@ -89,20 +91,30 @@ public class App {
 
     public static boolean run() throws Exception  {
         int[] numbers = { 0, 0 };
+        double[] memorize = new double[CAPACITY];
+        int index = 0;
         double calculationResult = 0;
         char inOperator = ' ';
-        Scanner sc = new Scanner(System.in);
         boolean isRun = true;
 
-        // 사용자가 잘못된 정보를 입력하거나, no / exit를 입력할 경우 inRun = false로 변환
+        Scanner sc = new Scanner(System.in);
+
+        /*
+            while 탈출 조건
+            1. 사용자가 no / exit를 입력할 경우
+            2. 저장공간이 꽉찬 경우
+                => inRun = false로 변환
+         */
         while(isRun) {
             inputNumbers(numbers, sc);
             inOperator = inputOperator(sc);
 
             calculationResult = calculation(numbers, inOperator);
+            // 결과를 배열에 저장 후 index 증가
+            memorize[index++] = calculationResult;
             printResult(numbers, inOperator, calculationResult);
 
-            isRun = askMoreCalculation(sc);
+            isRun = askMoreCalculation(sc) && index < CAPACITY;
         }
 
         return true;
