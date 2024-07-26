@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class App {
     // 사칙연산에 사용될 정규식 + - / * 중 1개
     static final String REGEXP_ONLY_OPERATOR = "(.[+-/*])";
+    static final int CALCULATOR = 1, CIRCLE_CALCULATOR = 2;
 
     // 숫자 입력받는 함수
     public static void inputNumbers(int[] numbers, Scanner sc) throws Exception {
@@ -34,6 +35,13 @@ public class App {
         }
 
         return inOperator.charAt(0);
+    }
+
+    public static int inputCalculatorType(Scanner sc) throws Exception {
+        System.out.print("사용할 계산기를 골라주세요. (1 : 사칙연산 계산기, 2 : 원의 넓이 계산기)" );
+        String input = sc.nextLine();
+
+        return Integer.parseInt(input);
     }
 
     // 사용자에게 계산기를 더 사용할 것인지 물어보는 함수
@@ -92,11 +100,62 @@ public class App {
         System.out.printf("%d %c %d = %f\n", numbers[0], inOperator, numbers[1], calculationResult);
     }
 
-    public static boolean run() throws Exception  {
+    public static void printCircleResult(int r, double calculationResult) {
+        System.out.printf("반지름 %d인 원의 넓이 = %f\n", r, calculationResult);
+    }
+
+    // 사칙연산 계산기를 사용하는 함수
+    public static void useCalculator(Calculator calculator, Scanner sc) throws Exception {
         int[] numbers = { 0, 0 };
         double calculationResult = 0;
         char inOperator = ' ';
-        boolean isRun = true, isRemove = false, isInquiry = false;
+        boolean isRemove = false, isInquiry = false;
+
+        inputNumbers(numbers, sc);
+        inOperator = inputOperator(sc);
+        calculationResult = calculator.calculate(numbers, inOperator);
+        printResult(numbers, inOperator, calculationResult);
+
+        isRemove = askRemove(sc);
+        if(isRemove) {
+            calculator.removeResult();
+        }
+
+        calculator.addMemorize(calculationResult);
+
+        isInquiry = askInquiry(sc);
+        if(isInquiry) {
+            calculator.inquiryResults();
+        }
+    }
+
+    // 원의 넓이 계산기를 사용하는 함수
+    public static void useCircleCalculator(Calculator calculator, Scanner sc) throws Exception {
+        int[] r = { 0 };
+        double calculationResult = 0;
+
+        boolean isRemove = false, isInquiry = false;
+
+        inputNumbers(r, sc);
+        calculationResult = calculator.circleCalculate(r);
+        printCircleResult(r[0], calculationResult);
+
+        isRemove = askRemove(sc);
+        if(isRemove) {
+            calculator.removeCircleResult();
+        }
+
+        calculator.addCircleMemorize(calculationResult);
+
+        isInquiry = askInquiry(sc);
+        if(isInquiry) {
+            calculator.inquiryCircleResults();
+        }
+    }
+
+    public static boolean run() throws Exception  {
+        int calculatorType = 0;
+        boolean isRun = true;
 
         Calculator calculator = new Calculator();
         Scanner sc = new Scanner(System.in);
@@ -104,23 +163,19 @@ public class App {
         /*
             while 탈출 조건
             1. 사용자가 no / exit를 입력할 경우
-         */
+        */
         while(isRun) {
-            inputNumbers(numbers, sc);
-            inOperator = inputOperator(sc);
-            calculationResult = calculator.calculate(numbers, inOperator);
-            printResult(numbers, inOperator, calculationResult);
+            calculatorType = inputCalculatorType(sc);
 
-            isRemove = askRemove(sc);
-            if(isRemove) {
-                calculator.removeResult();
-            }
-
-            calculator.addMemorize(calculationResult);
-
-            isInquiry = askInquiry(sc);
-            if(isInquiry) {
-                calculator.inquiryResults();
+            switch(calculatorType) {
+                case CALCULATOR:
+                    useCalculator(calculator, sc);
+                    break;
+                case CIRCLE_CALCULATOR:
+                    useCircleCalculator(calculator, sc);
+                    break;
+                default:
+                    break;
             }
 
             isRun = askMoreCalculation(sc);
