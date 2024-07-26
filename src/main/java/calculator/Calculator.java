@@ -7,6 +7,7 @@ public class Calculator {
     private Queue<Double> memorize;
 
     Calculator() {
+        
         memorize = new LinkedList<>();
     }
 
