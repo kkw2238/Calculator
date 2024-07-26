@@ -40,7 +40,7 @@ public class Calculator {
     }
 
     // 원의 넓이를 계산하는 함수 r * r * PI
-    public double circleCalculate(int[] r)  {
+    public double calculateCircleArea(int[] r)  {
         return (double)r[0] * r[0] * Math.PI;
     }
 

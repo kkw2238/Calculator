@@ -137,7 +137,7 @@ public class App {
         boolean isRemove = false, isInquiry = false;
 
         inputNumbers(r, sc);
-        calculationResult = calculator.circleCalculate(r);
+        calculationResult = calculator.calculateCircleArea(r);
         printCircleResult(r[0], calculationResult);
 
         isRemove = askRemove(sc);
