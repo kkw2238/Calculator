@@ -36,6 +36,23 @@ public class Calculator {
         return result;
     }
 
+    // 과거 저장된 연산 결과 전부를 출력하는 함수
+    public void inquiry() {
+        for(double d : memorize) {
+            System.out.print(d + " ");
+        }
+        System.out.println();
+    }
+
+    public void removeMomorize() {
+        if(!memorize.isEmpty()) {
+            memorize.poll();
+        } else {
+            System.out.println("삭제할 값이 없습니다.");
+        }
+    }
+
+    // 연산 결과를 저장하는 함수
     public void addMemorize(double value) {
         memorize.add(value);
     }

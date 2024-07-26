@@ -94,33 +94,13 @@ public class App {
         System.out.printf("%d %c %d = %f\n", numbers[0], inOperator, numbers[1], calculationResult);
     }
 
-    // 과거 저장된 연산 결과 전부를 출력하는 함수
-    public static void printMemorize(Queue<Double> memorize) {
-        for(double d : memorize) {
-            System.out.print(d + " ");
-        }
-        System.out.println();
-    }
-
-    // Queue를 앞으로 당기는 함수
-    public static void removeMemorize(Queue<Double> memorize) {
-        if(!memorize.isEmpty()) {
-            memorize.poll();
-        } else {
-            System.out.println("삭제할 값이 없습니다.");
-        }
-    }
-
     public static boolean run() throws Exception  {
         int[] numbers = { 0, 0 };
-        Queue<Double> memorize = new LinkedList<>();
-        int index = 0;
         double calculationResult = 0;
         char inOperator = ' ';
         boolean isRun = true, isRemove = false, isInquiry = false;
 
         Calculator calculator = new Calculator();
-
         Scanner sc = new Scanner(System.in);
 
         /*
@@ -135,14 +115,14 @@ public class App {
 
             isRemove = askRemove(sc);
             if(isRemove) {
-                removeMemorize(memorize);
+                calculator.removeMomorize();
             }
 
             calculator.addMemorize(calculationResult);
 
             isInquiry = askInquiry(sc);
             if(isInquiry) {
-                printMemorize(memorize);
+                calculator.inquiry();
             }
 
             isRun = askMoreCalculation(sc);
