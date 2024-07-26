@@ -10,6 +10,14 @@ public class Calculator {
         memorize = new LinkedList<>();
     }
 
+    Queue<Double> getMemorize() {
+        return memorize;
+    }
+
+    void setMemorize(Queue<Double> newMemorize) {
+        this.memorize = newMemorize;
+    }
+
     // 입력 받은 데이터를 토대로 연산해주는 함수
     public double calculate(int[] numbers, char inOperator) throws Exception {
         double result = 0;
@@ -44,6 +52,7 @@ public class Calculator {
         System.out.println();
     }
 
+    // 과거 데이터를 제거하는 함수
     public void removeMomorize() {
         if(!memorize.isEmpty()) {
             memorize.poll();
