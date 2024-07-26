@@ -70,17 +70,40 @@ public class App {
         System.out.printf("%d %c %d = %f\n", numbers[0], inOperator, numbers[1], calculationResult);
     }
 
+    // 사용자에게 계산기를 더 사용할 것인지 물어보는 함수
+    public static boolean askMoreCalculation(Scanner sc) throws Exception {
+        System.out.print("더 계산 하시겠습니까? yes/no/exit ( exit 입력시 종료 ) : ");
+        String answer = sc.nextLine();
+        answer = answer.toLowerCase();
+
+        if(answer.equals("exit") || answer.equals("no")) {
+            return false;
+        }
+        else if(answer.equals("yes")) {
+            return true;
+        }
+        else {
+            throw new Exception("yes/no/exit 중 하나만 입력해주십시오");
+        }
+    }
+
     public static boolean run() throws Exception  {
         int[] numbers = { 0, 0 };
         double calculationResult = 0;
         char inOperator = ' ';
         Scanner sc = new Scanner(System.in);
+        boolean isRun = true;
 
-        inputNumbers(numbers, sc);
-        inOperator = inputOperator(sc);
+        // 사용자가 잘못된 정보를 입력하거나, no / exit를 입력할 경우 inRun = false로 변환
+        while(isRun) {
+            inputNumbers(numbers, sc);
+            inOperator = inputOperator(sc);
 
-        calculationResult = calculation(numbers, inOperator);
-        printResult(numbers, inOperator, calculationResult);
+            calculationResult = calculation(numbers, inOperator);
+            printResult(numbers, inOperator, calculationResult);
+
+            isRun = askMoreCalculation(sc);
+        }
 
         return true;
     }
