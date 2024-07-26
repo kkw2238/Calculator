@@ -1,7 +1,5 @@
 package calculator;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -115,7 +113,7 @@ public class App {
 
             isRemove = askRemove(sc);
             if(isRemove) {
-                calculator.removeMomorize();
+                calculator.removeResult();
             }
 
             calculator.addMemorize(calculationResult);

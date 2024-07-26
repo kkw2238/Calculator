@@ -53,7 +53,7 @@ public class Calculator {
     }
 
     // 과거 데이터를 제거하는 함수
-    public void removeMomorize() {
+    public void removeResult() {
         if(!memorize.isEmpty()) {
             memorize.poll();
         } else {
