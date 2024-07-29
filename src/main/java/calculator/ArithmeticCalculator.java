@@ -5,13 +5,14 @@ import calculator.operators.*;
 import java.util.Map;
 
 public class ArithmeticCalculator extends Calculator {
+
     static Operator[] operators;
-    static final Map<Character, Integer> OPERATOR_INDEX = Map.of(
-            '+', 0,
-            '-', 1,
-            '*', 2,
-            '/', 3,
-            '%', 4
+    static final Map<Character, OperatorType> OPERATOR_INDEX = Map.of(
+            '+', OperatorType.PLUS,
+            '-', OperatorType.MINUS,
+            '*', OperatorType.MULTIPLY,
+            '/', OperatorType.DIVIDE,
+            '%', OperatorType.MOD
     );
 
     ArithmeticCalculator() {
@@ -28,7 +29,7 @@ public class ArithmeticCalculator extends Calculator {
     public double calculate(int[] numbers, char inOperator) throws Exception {
         double result = 0;
 
-        int operatorIndex = OPERATOR_INDEX.get(inOperator);
+        int operatorIndex = OperatorType.valueOf(OPERATOR_INDEX.get(inOperator).toString()).getValue();
         result = operators[operatorIndex].operate(numbers[0], numbers[1]);
 
         return result;
