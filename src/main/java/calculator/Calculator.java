@@ -3,7 +3,7 @@ package calculator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public abstract class Calculator {
+public abstract class Calculator<T extends Number, K extends Number> {
 
     /*
     *  final 키워드를 사용할 경우, 수정이 불가능한 필드로 변경됩니다.
@@ -40,8 +40,8 @@ public abstract class Calculator {
     }
 
     // 입력 받은 데이터를 토대로 연산해주는 함수
-    double calculateCircleArea(int[] r) { return 0; };
-    double calculate(int[] numbers, char inOperator) throws Exception { return 0; };
+    double calculateCircleArea(T[] r) { return 0; };
+    double calculate(T number1, K number2, char inOperator) throws Exception { return 0; };
 
     // 과거 저장된 연산 결과 전부를 출력하는 함수
     abstract public void inquiry();

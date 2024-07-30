@@ -1,11 +1,11 @@
 package calculator;
 
-public class CircleCalculator extends Calculator {
+public class CircleCalculator<T extends Number, K extends Number> extends Calculator<T, K> {
 
     // 원의 넓이를 계산하는 함수 r * r * PI
     @Override
-    public double calculateCircleArea(int[] r)  {
-        return (double)r[0] * r[0] * Math.PI;
+    public double calculateCircleArea(T[] r)  {
+        return r[0].doubleValue() * r[0].doubleValue() * Math.PI;
     }
 
     @Override

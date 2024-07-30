@@ -9,32 +9,25 @@ public class App {
     static final int CALCULATOR = 0, CIRCLE_CALCULATOR = 1;
 
     // 숫자 입력받는 함수
-    public static void inputNumbers(int[] numbers, Scanner sc) throws Exception {
+    public static void inputNumbers(Number[] numbers, Scanner sc) throws Exception {
         String input = "";
-
         for(int i = 0; i < numbers.length; ++i) {
-            System.out.printf("%d번째 양의 정수를 입력해주세요 : ", i + 1);
+            System.out.printf("%d번째 양의 정수 혹은 실수를 입력해주세요 : ", i + 1);
             input = sc.nextLine();
-            numbers[i] = Integer.parseInt(input);
 
-            // 음의 정수 입력했을 경우 Throw
-            if (numbers[i] < 0) {
-                throw new Exception("음의 정수를 입력하셨습니다." );
+            // 문자열에 .이 있으면 Double타입으로 치환
+            if(input.contains("."))
+            {
+                numbers[i] = Double.parseDouble(input);
+            }
+            else {
+                numbers[i] = Integer.parseInt(input);
+                // 음의 정수 입력했을 경우 Throw
+                if (numbers[i].intValue() < 0) {
+                    throw new Exception("음의 정수를 입력하셨습니다." );
+                }
             }
         }
-    }
-
-    // 연산자 입력받는 함수
-    public static char inputOperator(Scanner sc) throws Exception {
-        System.out.print("사칙연산 기호를 입력해주세요 : " );
-        String inOperator = sc.nextLine();
-
-        // 사칙연산 기호 확인 ( 길이가 2이상 이거나, 정규식에 포함이 안된 경우 Throw )
-        if(inOperator.length() > 1 || Pattern.matches(REGEXP_ONLY_OPERATOR, inOperator)) {
-            throw new Exception("사칙연산 기호를 확인해주세요.");
-        }
-
-        return inOperator.charAt(0);
     }
 
     // 사용할 계산기 타입을 입력받는 함수
@@ -96,33 +89,46 @@ public class App {
         }
     }
 
-    // 결과 출력해주는 함수
-    public static void printResult(int[] numbers, char inOperator, double calculationResult) {
-        System.out.printf("%d %c %d = %f\n", numbers[0], inOperator, numbers[1], calculationResult);
+    // 연산자 입력받는 함수
+    public static char inputOperator(Scanner sc) throws Exception {
+        System.out.print("사칙연산 기호를 입력해주세요 : " );
+        String inOperator = sc.nextLine();
+
+        // 사칙연산 기호 확인 ( 길이가 2이상 이거나, 정규식에 포함이 안된 경우 Throw )
+        if(inOperator.length() > 1 || Pattern.matches(REGEXP_ONLY_OPERATOR, inOperator)) {
+            throw new Exception("사칙연산 기호를 확인해주세요.");
+        }
+
+        return inOperator.charAt(0);
     }
 
-    // 반지름 너비 출력해주는 함수
-    public static void printCircleResult(int r, double calculationResult) {
-        System.out.printf("반지름 %d인 원의 넓이 = %f\n", r, calculationResult);
+    // 결과 출력해주는 함수
+    public static void printResult(Number[] numbers, char inOperator, double calculationResult) {
+        System.out.println(numbers[0] + " " + inOperator + " " + numbers[1] + " = " + calculationResult);
     }
 
     // 사칙연산 계산기를 사용하는 함수
     public static double useCalculator(Calculator calculator, Scanner sc) throws Exception {
-        int[] numbers = { 0, 0 };
+        Number[] numbers = { 0, 0 };
         double calculationResult = 0;
         char inOperator = ' ';
 
         inputNumbers(numbers, sc);
         inOperator = inputOperator(sc);
-        calculationResult = calculator.calculate(numbers, inOperator);
+        calculationResult = calculator.calculate(numbers[0], numbers[1], inOperator);
         printResult(numbers, inOperator, calculationResult);
 
         return calculationResult;
     }
 
+    // 반지름 너비 출력해주는 함수
+    public static void printCircleResult(Number r, double calculationResult) {
+        System.out.println("반지름 " + r + "인 원의 넓이 = " + calculationResult);
+    }
+
     // 원의 넓이 계산기를 사용하는 함수
     public static double useCircleCalculator(Calculator calculator, Scanner sc) throws Exception {
-        int[] r = { 0 };
+        Number[] r = { 0 };
         double calculationResult = 0;
 
         inputNumbers(r, sc);
