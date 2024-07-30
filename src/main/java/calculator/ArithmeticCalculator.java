@@ -2,6 +2,7 @@ package calculator;
 
 import calculator.operators.*;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class ArithmeticCalculator<T extends Number, K extends Number> extends Calculator<T, K> {
@@ -25,7 +26,6 @@ public class ArithmeticCalculator<T extends Number, K extends Number> extends Ca
         };
     }
 
-    @Override
     public double calculate(T number1, K number2, char inOperator) throws Exception {
         double result = 0;
 
@@ -41,11 +41,20 @@ public class ArithmeticCalculator<T extends Number, K extends Number> extends Ca
     }
 
     @Override
-    public void inquiry(){
-        for(double d : memorizeCalculation) {
-            System.out.print(d + " ");
-        }
-        System.out.println();
+    public double[] inquiryAll(){
+        return memorizeCalculation.stream()
+                .mapToDouble(Double::doubleValue)
+                .toArray();
+    }
+
+    @Override
+    public double[] inquiryUsedBenchmark(T benchmark) {
+        double[] result = memorizeCalculation.stream()
+                .filter((d) -> d >= benchmark.doubleValue())
+                .mapToDouble(Double::doubleValue)
+                .toArray();
+
+        return result;
     }
 
     @Override

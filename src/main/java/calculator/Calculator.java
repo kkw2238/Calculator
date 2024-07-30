@@ -39,12 +39,10 @@ public abstract class Calculator<T extends Number, K extends Number> {
         Calculator.memorizeCircleCalculation = newMemorize;
     }
 
-    // 입력 받은 데이터를 토대로 연산해주는 함수
-    double calculateCircleArea(T[] r) { return 0; };
-    double calculate(T number1, K number2, char inOperator) throws Exception { return 0; };
-
-    // 과거 저장된 연산 결과 전부를 출력하는 함수
-    abstract public void inquiry();
+    // 과거 저장된 연산 결과 전부를 가져오는 함수
+    abstract public double[] inquiryAll();
+    // 특정값 이상의 데이터를 추출하는 함수
+    abstract public double[] inquiryUsedBenchmark(T benchmark);
     // 과거 데이터를 제거하는 함수
     abstract public void removeResult();
     // 연산 결과를 저장하는 함수
