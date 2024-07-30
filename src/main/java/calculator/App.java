@@ -2,13 +2,16 @@ package calculator;
 
 import calculator.utility.Comunication;
 import calculator.utility.Utility;
+import calculators.ArithmeticCalculator;
+import calculators.Calculator;
+import calculators.CircleCalculator;
+import calculators.MathematicalCalculator;
 
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class App {
     // 계산기 타입 0 일반 계산기, 1 원 계산기
-    static final int CALCULATOR = 0, CIRCLE_CALCULATOR = 1;
+    static final int CALCULATOR = 0, CIRCLE_CALCULATOR = 1, MATHMATICAL_CALCULATOR = 2;
 
     // 결과 출력해주는 함수
     public static void printResult(Number[] numbers, char inOperator, double calculationResult) {
@@ -18,6 +21,10 @@ public class App {
     // 반지름 너비 출력해주는 함수
     public static void printCircleResult(Number r, double calculationResult) {
         System.out.println("반지름 " + r + "인 원의 넓이 = " + calculationResult);
+    }
+
+    public static void printMaticalResult(String matical, double maticalResult) {
+        System.out.println(matical + " = " + maticalResult);
     }
 
     // 삭제를 물어보고 처리 하는 함수
@@ -66,12 +73,21 @@ public class App {
         return calculationResult;
     }
 
+    public static double useMathematicalCalculator(MathematicalCalculator calculator, Scanner sc) throws Exception {
+        String matical = Comunication.askAndGetAnswer("수식을 입력해주세요 : ", sc);
+
+        double calculationResult = calculator.calculate(matical);
+        printMaticalResult(matical, calculationResult);
+
+        return calculationResult;
+    }
+
     public static void run() throws Exception  {
         int calculatorType = 0;
         boolean isRun = true, isRemove = false, isInquiry = false;
         double calculationResult = 0;
 
-        Calculator[] calculator = { new ArithmeticCalculator(), new CircleCalculator() };
+        calculators.Calculator[] calculator = { new calculators.ArithmeticCalculator(), new calculators.CircleCalculator(), new calculators.MathematicalCalculator() };
         Scanner sc = new Scanner(System.in);
 
         /*
@@ -88,6 +104,9 @@ public class App {
                 case CIRCLE_CALCULATOR:
                     calculationResult = useCircleCalculator((CircleCalculator)calculator[CIRCLE_CALCULATOR], sc);
                     break;
+                case MATHMATICAL_CALCULATOR:
+                    calculationResult = useMathematicalCalculator((MathematicalCalculator)calculator[MATHMATICAL_CALCULATOR], sc);
+                    break;
                 default:
                     throw new Exception("계산기 종류를 확인해 주세요.");
             }
@@ -102,7 +121,7 @@ public class App {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
             run();
         } catch (NumberFormatException ex) {

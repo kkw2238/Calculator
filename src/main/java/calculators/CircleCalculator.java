@@ -1,4 +1,4 @@
-package calculator;
+package calculators;
 
 public class CircleCalculator<T extends Number, K extends Number> extends Calculator<T, K> {
 

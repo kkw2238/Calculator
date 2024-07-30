@@ -43,4 +43,9 @@ public class Utility {
             System.out.println(i + " : " + arrays[i]);
         }
     }
+
+    // 연산자인지 체크하는 함수
+    static public boolean isOperator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/';
+    }
 }

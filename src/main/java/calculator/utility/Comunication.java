@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
     사용자에게 입력을 요구하고 받는 처리를 담당하는 Class
  */
 public class Comunication {
-    static final String REGEXP_ONLY_OPERATOR = "(.[+-/*%])";
+    static public final String REGEXP_ONLY_OPERATOR = "(.[+-/*%])";
 
     // 가장 오래된 메모리를 삭제할 것인지 확인하는 함수
     public static boolean askRemove(Scanner sc) throws Exception {
@@ -19,7 +19,7 @@ public class Comunication {
 
     // 사용할 계산기 타입을 입력받는 함수
     public static int askCalculatorType(Scanner sc) throws Exception {
-        String input = Comunication.askAndGetAnswer("사용할 계산기를 골라주세요. (0 : 사칙연산 계산기, 1 : 원의 넓이 계산기) : ", sc);
+        String input = Comunication.askAndGetAnswer("사용할 계산기를 골라주세요. (0 : 사칙연산 계산기, 1 : 원의 넓이 계산기, 2 : 수식 계산기) : ", sc);
         return Integer.parseInt(input);
     }
 

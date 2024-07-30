@@ -1,8 +1,7 @@
-package calculator;
+package calculators;
 
 import calculator.operators.*;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public class ArithmeticCalculator<T extends Number, K extends Number> extends Calculator<T, K> {
@@ -16,7 +15,7 @@ public class ArithmeticCalculator<T extends Number, K extends Number> extends Ca
             '%', OperatorType.MOD
     );
 
-    ArithmeticCalculator() {
+    public ArithmeticCalculator() {
         operators = new Operator[] {
                 new AddOperator<T, K>(),
                 new SubtractOperator<T, K>(),
