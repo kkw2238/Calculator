@@ -76,6 +76,9 @@ public class App {
     public static double useMathematicalCalculator(MathematicalCalculator calculator, Scanner sc) throws Exception {
         String matical = Comunication.askAndGetAnswer("수식을 입력해주세요 : ", sc);
 
+        if(!calculator.checkMathmatical(matical)) {
+            throw new Exception("수식을 확인해주세요.");
+        }
         double calculationResult = calculator.calculate(matical);
         printMaticalResult(matical, calculationResult);
 
